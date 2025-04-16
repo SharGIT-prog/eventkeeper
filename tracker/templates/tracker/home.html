@@ -1,0 +1,69 @@
+<!-- tracker/templates/tracker/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Keeper</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      padding: 30px;
+    }
+
+    input, textarea, button {
+      background-color: #1f1f1f;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+    }
+
+    .event-box {
+      background-color: #1e1e1e;
+      margin: 15px auto;
+      padding: 15px;
+      border: 1px dashed #00ffcc;
+      width: 50%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🕒 Event Keeper</h1>
+  <h2 id="datetime">Loading...</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    <input type="date" name="date" required />
+    <textarea name="note" placeholder="Enter your note" required></textarea>
+    <br />
+    <button type="submit">Save Event</button>
+  </form>
+
+  <hr />
+
+  <h2>📅 Saved Events</h2>
+  {% for item in events %}
+    <div class="event-box">
+      <strong>{{ item.date }}</strong><br/>
+      {{ item.note }}
+    </div>
+  {% empty %}
+    <p>No events saved yet.</p>
+  {% endfor %}
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('datetime').textContent = now.toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>
